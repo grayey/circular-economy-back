@@ -1,9 +1,21 @@
 import { Module } from '@nestjs/common';
-import { AppController } from '../controllers/app.controller';
-import { AppService } from '../services/app.service';
+import { AppController } from 'src/controllers/app.controller';
+import { AppService } from 'src/services/app.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import environment from 'src/environments';
+import { UserModule } from 'src/modules/user.module';
+import { AuthModule } from 'src/modules/auth.module';
+import { AdminModule } from './admin.module';
+import { ProductsModule } from './products.module';
 
 @Module({
-  imports: [],
+  imports: [
+    MongooseModule.forRoot(environment.mongoUri),
+    AuthModule,
+    UserModule,
+    AdminModule,
+    ProductsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

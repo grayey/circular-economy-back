@@ -1,12 +1,23 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from '../services/app.service';
+import { Controller, Get, HttpException, HttpStatus } from '@nestjs/common';
+import { ApiSuccessResponse } from 'src/interfaces/api.interface';
+import { responseOk } from 'src/utils/formatters';
+import { AppService } from 'src/services/app.service';
 
-@Controller()
+@Controller('')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get('/')
+  async getHello(): Promise<ApiSuccessResponse> {
+    const data = await [
+      {
+        id: '1234qwerty',
+        userName: 'Emeka Ehirim',
+        email: 'ehirim.emeka.e@gmail.com',
+        phoneNumber: '07065018170',
+      },
+    ];
+
+    return responseOk(data);
   }
 }
