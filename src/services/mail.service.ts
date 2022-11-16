@@ -13,7 +13,7 @@ export class MailService {
       await this.mailerService.sendMail({
         to: user.loginId,
         // from: '"Support Team" <support@example.com>', // override default from
-        subject: 'Welcome to LexChange App! Confirm your Email',
+        subject: 'Welcome to Dotisense! Confirm your Email',
         template: emailTemplates.SIGN_UP, // `.hbs` extension is appended automatically
         context: {
           email: user.loginId,

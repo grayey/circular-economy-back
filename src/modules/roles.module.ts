@@ -4,12 +4,10 @@ import { RolesController } from 'src/controllers/roles.controller';
 import { RolesService } from 'src/services/roles.service';
 import { RolesSchema } from 'src/schemas/roles.schema';
 import { UsersSchema } from 'src/schemas/user.schema';
-import { SchemaCollections } from 'src/schemas';
+import { Schemata } from 'src/schemas';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([SchemaCollections.User, SchemaCollections.Role]),
-  ],
+  imports: [MongooseModule.forFeature([Schemata.User, Schemata.Role])],
   controllers: [RolesController],
   providers: [RolesService],
 })

@@ -5,13 +5,13 @@ import {
   TransactionHoldingStatus,
   TransactionTypes,
 } from 'src/utils/enums';
-import { SchemaCollections } from '.';
+import { Schemata } from '.';
 
 export const WalletSchema = new Schema(
   {
     owner: {
       type: Schema.Types.ObjectId,
-      ref: SchemaCollections.User.name,
+      ref: Schemata.User.name,
     },
     balance: {
       type: String,
@@ -30,11 +30,11 @@ export const TransactionSchema = new Schema(
   {
     sender: {
       type: Schema.Types.ObjectId,
-      ref: SchemaCollections.User.name,
+      ref: Schemata.User.name,
     },
     receiver: {
       type: Schema.Types.ObjectId,
-      ref: SchemaCollections.User.name,
+      ref: Schemata.User.name,
     },
     amount: {
       type: String,

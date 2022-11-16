@@ -11,10 +11,13 @@ import {
   Param,
   UseGuards,
 } from '@nestjs/common';
-import { CategoriesService } from '../services/categories.service';
-import { CategoriesInterface } from '../interfaces/categories.interface';
+import { ApiTags } from '@nestjs/swagger';
+
+import { CategoriesService } from 'src/services/categories.service';
+import { CategoriesInterface } from 'src/interfaces/categories.interface';
 import { CategoryDto } from 'src/dtos/categories.dto';
 
+@ApiTags('Categories')
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoryService: CategoriesService) {}

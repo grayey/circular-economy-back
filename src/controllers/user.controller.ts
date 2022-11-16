@@ -8,11 +8,12 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ApiSuccessResponse } from 'src/interfaces/api.interface';
+import { ApiTags } from '@nestjs/swagger';
 import { UserInterface } from 'src/interfaces/user.interface';
-import { responseOk } from 'src/utils/formatters';
 import { UserService } from 'src/services/user.service';
+import { UserCreateDto, UserUpdateDto } from 'src/dtos/user.dto';
 
+@ApiTags('Users')
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -21,23 +22,33 @@ export class UserController {
    * This method lists users
    */
   @Get()
-  async getAllUsers(@Query() { q, skip, limit }): Promise<any> {
+  async getAllUsers(
+    @Query() { q, skip, limit },
+  ): Promise<{ results: UserInterface[]; count: number }> {
     return await this.userService.findAll(q, { skip, limit });
+  }
+
+  /**
+   * This method retrieves a single user based on a local attribute
+   */
+  @Get('exists')
+  async getUserByAttribute(@Query() { attr, q }): Promise<UserInterface> {
+    return await this.userService.findOne({ [attr]: q });
   }
 
   /**
    * This method retrieves a user by their id
    */
   @Get(':id')
-  async getUserById(@Param('id') id): Promise<UserInterface> {
-    return await this.userService.findOne({ _id: id });
+  async getUserById(@Param('id') _id: string): Promise<UserInterface> {
+    return await this.userService.findOne({ _id });
   }
 
   /**
    * This method creates a new user
    */
   @Post()
-  async createUser(@Body() user: UserInterface): Promise<UserInterface> {
+  async createUser(@Body() user: UserCreateDto): Promise<UserInterface> {
     return await this.userService.create(user);
   }
 
@@ -48,7 +59,10 @@ export class UserController {
    * @returns
    */
   @Put(':id')
-  async update(@Body() updateUserDto, @Param('id') id): Promise<UserInterface> {
+  async update(
+    @Body() updateUserDto: UserUpdateDto,
+    @Param('id') id: string,
+  ): Promise<UserInterface> {
     return this.userService.update(id, updateUserDto);
   }
 
@@ -58,7 +72,7 @@ export class UserController {
    * @returns
    */
   @Delete(':id')
-  async delete(@Param('id') id): Promise<UserInterface> {
+  async delete(@Param('id') id: string): Promise<UserInterface> {
     return await this.userService.delete(id);
   }
 }

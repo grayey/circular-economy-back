@@ -11,11 +11,13 @@ import {
   Param,
   UseGuards,
 } from '@nestjs/common';
-import { BidsService } from '../services/bids.service';
-import { BidsInterface } from '../interfaces/bids.interface';
-import { StocksInterface } from '../interfaces/stocks.interface';
+import { ApiTags } from '@nestjs/swagger';
+import { BidsService } from 'src/services/bids.service';
+import { BidsInterface } from 'src/interfaces/bids.interface';
+import { StocksInterface } from 'src/interfaces/stocks.interface';
 import { BidDto } from 'src/dtos/bids.dto';
 
+@ApiTags('Bids')
 @Controller('bids')
 export class BidsController {
   constructor(private readonly bidService: BidsService) {}

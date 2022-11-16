@@ -11,10 +11,13 @@ import {
   Param,
   UseGuards,
 } from '@nestjs/common';
-import { ProductsService } from '../services/products.service';
-import { ProductsInterface } from '../interfaces/products.interface';
-import { StocksInterface } from '../interfaces/stocks.interface';
+import { ApiTags } from '@nestjs/swagger';
 
+import { ProductsService } from 'src/services/products.service';
+import { ProductsInterface } from 'src/interfaces/products.interface';
+import { StocksInterface } from 'src/interfaces/stocks.interface';
+
+@ApiTags('Products')
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productService: ProductsService) {}

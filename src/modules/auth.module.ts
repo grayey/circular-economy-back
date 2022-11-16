@@ -9,9 +9,7 @@ import { LocalStrategy } from 'src/utils/strategies/local.strategy';
 import { jwtConstants } from 'src/utils/constants';
 import { MailModule } from 'src/modules/mail.module';
 import { SmsModule } from 'src/modules/sms.module';
-import { SchemaCollections } from 'src/schemas';
-
-
+import { Schemata } from 'src/schemas';
 
 @Module({
   imports: [
@@ -23,9 +21,7 @@ import { SchemaCollections } from 'src/schemas';
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '60s' },
     }),
-    MongooseModule.forFeature([
-      SchemaCollections.OTP
-    ])
+    MongooseModule.forFeature([Schemata.OTP]),
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy],

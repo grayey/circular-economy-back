@@ -61,3 +61,20 @@ export enum TransactionDocument {
   'BID',
   'WALLET',
 }
+
+export enum Entities {
+  OTP = 'OTP',
+  User = 'User',
+  Bid = 'Bid',
+  Product = 'Product',
+  Review = 'Review',
+  Role = 'Role',
+  Stock = 'Stock',
+  Category = 'Category',
+  Chat = 'Chat',
+}
+
+export enum ApiErrors {
+  NOT_FOUND = 'NOT_FOUND',
+  TOKEN_EXPIRED = 'TOKEN_EXPIRED',
+}

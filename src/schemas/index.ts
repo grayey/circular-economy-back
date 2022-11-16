@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import { Entities } from 'src/utils/enums';
 import { BidsSchema } from './bids.schema';
 import { CategoriesSchema } from './categories.schema';
 import { ChatsSchema } from './chats.schema';
@@ -14,7 +15,11 @@ interface SchemaInterface {
   schema: Schema;
 }
 
-export const SchemaCollections: { [key: string]: SchemaInterface } = {
+type Schemas = {
+  [key in Entities]: SchemaInterface;
+};
+
+export const Schemata: Schemas = {
   OTP: { name: 'Otp', schema: OtpSchema },
   User: { name: 'Users', schema: UsersSchema },
   Bid: { name: 'Bids', schema: BidsSchema },
@@ -22,6 +27,6 @@ export const SchemaCollections: { [key: string]: SchemaInterface } = {
   Review: { name: 'Reviews', schema: ReviewsSchema },
   Role: { name: 'Roles', schema: RolesSchema },
   Stock: { name: 'Stocks', schema: StocksSchema },
-  Categories: { name: 'Categories', schema: CategoriesSchema },
+  Category: { name: 'Categories', schema: CategoriesSchema },
   Chat: { name: 'Chats', schema: ChatsSchema },
 };

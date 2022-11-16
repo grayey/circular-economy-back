@@ -1,4 +1,26 @@
-export const isValidEmail = (email:string) => email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);  
+import { HttpException, HttpStatus } from '@nestjs/common';
+import { ApiErrors } from './enums';
 
-export const addMinutesToDate = (date, minutes) => new Date(date.getTime() + minutes*60000);
-  
+export const isValidEmail = (email: string) => {
+  console.log({ email });
+  return email.match(
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+  );
+};
+
+export const addMinutesToDate = (date, minutes) =>
+  new Date(date.getTime() + minutes * 60000);
+
+export const formatErrors = (
+  errorType: ApiErrors,
+  message: string,
+): HttpException => {
+  const errorCodes = {
+    [ApiErrors.NOT_FOUND]: HttpStatus.NOT_FOUND,
+    [ApiErrors.TOKEN_EXPIRED]: HttpStatus.NOT_ACCEPTABLE,
+  };
+  return new HttpException(
+    JSON.stringify({ [errorType]: message }),
+    errorCodes[errorType],
+  );
+};

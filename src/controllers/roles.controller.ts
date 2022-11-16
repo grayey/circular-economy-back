@@ -11,9 +11,11 @@ import {
     Param,
     UseGuards,
 } from '@nestjs/common';
-import { RolesService } from '../services/roles.service';
-import { RolesInterface} from '../interfaces/roles.interface';
+import { ApiTags } from '@nestjs/swagger';
+import { RolesService } from 'src/services/roles.service';
+import { RolesInterface} from 'src/interfaces/roles.interface';
 
+@ApiTags('Roles')
 @Controller('roles')
 export class RolesController {
 

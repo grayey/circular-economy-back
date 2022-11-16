@@ -5,14 +5,11 @@ import { ProductsController } from 'src/controllers/products.controller';
 import { ProductsService } from 'src/services/products.service';
 import { BidsModule } from './bids.module';
 import { ReviewsModule } from './reviews.module';
-import { SchemaCollections } from 'src/schemas';
+import { Schemata } from 'src/schemas';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      SchemaCollections.Product,
-      SchemaCollections.Stock,
-    ]),
+    MongooseModule.forFeature([Schemata.Product, Schemata.Stock]),
     BidsModule,
     ReviewsModule,
   ],

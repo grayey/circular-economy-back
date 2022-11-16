@@ -21,6 +21,18 @@ const UsersSchema = new Schema(
       required: true,
       select: false,
     },
+    signUpToken: {
+      type: String,
+      max: 100,
+      unique: true,
+      required: true,
+    },
+    tokenExpires: {
+      type: String,
+      max: 100,
+      unique: true,
+      required: true,
+    },
     userType: {
       type: String,
       enum: Object.values(UserTypes),
@@ -28,7 +40,7 @@ const UsersSchema = new Schema(
     },
     status: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   { timestamps: true },

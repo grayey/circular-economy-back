@@ -11,9 +11,11 @@ import {
   Param,
   UseGuards,
 } from '@nestjs/common';
-import { TasksService } from '../services/tasks.service';
-import { TasksInterface } from '../interfaces/tasks.interface';
+import { ApiTags } from '@nestjs/swagger';
+import { TasksService } from 'src/services/tasks.service';
+import { TasksInterface } from 'src/interfaces/tasks.interface';
 
+@ApiTags('Tasks')
 @Controller('tasks')
 export class TasksController {
   constructor(private readonly taskService: TasksService) {}
