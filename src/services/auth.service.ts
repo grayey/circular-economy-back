@@ -8,6 +8,7 @@ import { UserInterface } from 'src/interfaces/user.interface';
 import { UserCreateDto, UserSignUpDto } from 'src/dtos/user.dto';
 import { formatErrors } from 'src/utils/helpers';
 import { ApiErrors } from 'src/utils/enums';
+import { copyToJson } from 'src/utils/formatters';
 
 @Injectable()
 export class AuthService {
@@ -32,6 +33,7 @@ export class AuthService {
       user.password = undefined;
       return user;
     }
+
     return null;
   };
 
@@ -62,7 +64,7 @@ export class AuthService {
    * @returns
    */
   public login = async (user: UserInterface) => ({
-    access_token: this.jwtService.sign({ ...user }),
+    access_token: this.jwtService.sign(copyToJson(user)),
   });
 
   /**
