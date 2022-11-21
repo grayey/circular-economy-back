@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { LoginTypes, UserTypes } from 'src/utils/enums';
 
-export class UserBaseDto {
+export class UserDto {
   @ApiProperty({
     type: String,
     description: 'Required',
@@ -33,20 +33,40 @@ export class UserBaseDto {
   tokenExpires?: String;
 }
 
-export class UserCreateDto extends UserBaseDto {
+export class UserSignUpDto extends UserDto {
   @ApiProperty({
     type: String,
     description: 'Required',
   })
-  readonly password: string;
+  password: string;
 }
 
-export class UserUpdateDto extends UserBaseDto {
+export class UserCreateDto extends UserDto {
+  password: string;
+  status: boolean;
+  @ApiProperty({
+    type: String,
+    description: 'Optional',
+  })
+  readonly firstName?: string;
+  @ApiProperty({
+    type: String,
+    description: 'Optional',
+  })
+  readonly lastName?: string;
+}
+
+export class UserUpdateDto extends UserDto {
   @ApiProperty({
     type: String,
     description: 'Required',
   })
   readonly _id: string;
+  @ApiProperty({
+    type: Boolean,
+    description: 'Optional',
+  })
+  status?: boolean;
 }
 
 export class UserVerfiyDto {

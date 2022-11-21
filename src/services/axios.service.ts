@@ -33,6 +33,7 @@ export default class AxiosService{
             .post(url, data, { params })
             .then((response: any) => response.data)
             .catch((error: any) => {
+                // LOG instead of throw
                 throw error;
             });
     };

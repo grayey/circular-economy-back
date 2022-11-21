@@ -10,13 +10,13 @@ import { jwtConstants } from 'src/utils/constants';
 import { MailModule } from 'src/modules/mail.module';
 import { SmsModule } from 'src/modules/sms.module';
 import { Schemata } from 'src/schemas';
+import { NotificationModule } from './notification.module';
 
 @Module({
   imports: [
     UserModule,
     PassportModule,
-    MailModule,
-    SmsModule,
+    NotificationModule,
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '60s' },

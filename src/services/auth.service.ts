@@ -5,11 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from './user.service';
 import { compareSync } from 'bcrypt';
 import { UserInterface } from 'src/interfaces/user.interface';
-import { OtpInterface } from 'src/interfaces/otp.interface';
-import SmsService from './sms.service';
-import { UserCreateDto } from 'src/dtos/user.dto';
-import { Schemata } from 'src/schemas';
-import { async } from 'rxjs';
+import { UserCreateDto, UserSignUpDto } from 'src/dtos/user.dto';
 import { formatErrors } from 'src/utils/helpers';
 import { ApiErrors } from 'src/utils/enums';
 
@@ -18,51 +14,62 @@ export class AuthService {
   constructor(
     private usersService: UserService,
     private jwtService: JwtService,
-    private smsService: SmsService,
-    @InjectModel(Schemata.OTP.name)
-    private otpModel: Model<OtpInterface>,
   ) {}
 
+  /**
+   * Validates a user's login credentials
+   * @param loginId
+   * @param password
+   * @returns
+   */
   public validateUser = async (
     loginId: string,
     password: string,
   ): Promise<any> => {
     const user: UserInterface = await this.usersService.findOne({ loginId }, 1);
-    const passwordMatches = compareSync(password, user.password);
+    const passwordMatches = user ? compareSync(password, user.password) : false;
     if (user && passwordMatches) {
-      const { password, ...result } = user;
-      return result;
+      user.password = undefined;
+      return user;
     }
-
     return null;
   };
 
+  /**
+   * Verifies a user's sign up token
+   * @param signUpToken
+   * @returns
+   */
   public verifyUser = async (signUpToken: string) => {
     const user = await this.usersService.findOne({ signUpToken });
     if (!user) {
       throw formatErrors(ApiErrors.NOT_FOUND, 'User not found.');
     }
-    if (new Date(user.tokenExpires as string) < new Date()) {
+    if (new Date(user.tokenExpires) < new Date()) {
       throw formatErrors(
         ApiErrors.TOKEN_EXPIRED,
         'Verification token expired.',
       );
     }
     user.status = true;
-    this.usersService.update(user._id, user);
+    user.save();
     return this.login(user);
   };
 
+  /**
+   * Logs a user in
+   * @param user
+   * @returns
+   */
   public login = async (user: UserInterface) => ({
     access_token: this.jwtService.sign({ ...user }),
   });
 
-  public signUp = async (user: UserCreateDto): Promise<UserInterface> =>
+  /**
+   * Registers a user
+   * @param user
+   * @returns
+   */
+  public signUp = async (user: UserSignUpDto): Promise<UserInterface> =>
     await this.usersService.create(user);
-
-  public sendOtp = async (phoneNumber: string, otp: OtpInterface) => {
-    const otpInstance = new this.otpModel(otp);
-    const newOtp = await otpInstance.save();
-    return await this.smsService.sendMessage(phoneNumber, newOtp.otp);
-  };
 }

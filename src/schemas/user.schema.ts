@@ -25,13 +25,11 @@ const UsersSchema = new Schema(
       type: String,
       max: 100,
       unique: true,
-      required: true,
     },
     tokenExpires: {
       type: String,
       max: 100,
       unique: true,
-      required: true,
     },
     userType: {
       type: String,
