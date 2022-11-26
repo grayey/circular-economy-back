@@ -3,6 +3,7 @@ import { Entities } from 'src/utils/enums';
 import { BidsSchema } from './bids.schema';
 import { CategoriesSchema } from './categories.schema';
 import { ChatsSchema } from './chats.schema';
+import { NotificationSchema } from './notification.schema';
 import { OtpSchema } from './otp.schema';
 import { ProductsSchema } from './products.schema';
 import { ReviewsSchema } from './reviews.schema';
@@ -29,4 +30,5 @@ export const Schemata: Schemas = {
   Stock: { name: 'Stocks', schema: StocksSchema },
   Category: { name: 'Categories', schema: CategoriesSchema },
   Chat: { name: 'Chats', schema: ChatsSchema },
+  Notification: { name: 'Notification', schema: NotificationSchema },
 };

@@ -7,6 +7,7 @@ import { UserModule } from 'src/modules/user.module';
 import { AuthModule } from 'src/modules/auth.module';
 import { AdminModule } from './admin.module';
 import { ProductsModule } from './products.module';
+import { NotificationModule } from './notification.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ProductsModule } from './products.module';
     UserModule,
     AdminModule,
     ProductsModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

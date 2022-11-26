@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { UserInterface } from 'src/interfaces/user.interface';
 import * as bcrypt from 'bcrypt';
 import { CurrencyTypes, LoginTypes } from 'src/utils/enums';
-import { UserCreateDto, UserUpdateDto } from 'src/dtos/user.dto';
+import { UserCreateDto, UserSignUpDto, UserUpdateDto } from 'src/dtos/user.dto';
 import { isValidEmail } from 'src/utils/helpers';
 import { SearchService } from './search.service';
 import { Pagination } from 'src/interfaces/pagination.interface';
@@ -43,8 +43,7 @@ export class UserService extends SearchService {
   ): Promise<UserInterface> {
     return await this.userModel
       .findOne({ ...search })
-      .select(withPassword ? '+password' : '')
-      .lean();
+      .select(withPassword ? '+password' : '');
   }
 
   /**
@@ -52,7 +51,9 @@ export class UserService extends SearchService {
    * @param user
    * @returns Promise<UserInterface>
    */
-  public async create(user: UserCreateDto): Promise<UserInterface> {
+  public async create(
+    user: UserCreateDto | UserSignUpDto,
+  ): Promise<UserInterface> {
     const hashedPassword = await bcrypt.hash(user.password, 10); // hash password with 10 salt rounds
     const loginType: LoginTypes = isValidEmail(user.loginId)
       ? LoginTypes.EMAIL

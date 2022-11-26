@@ -16,3 +16,5 @@ export const responseOk = (
     },
   };
 };
+
+export const copyToJson = (data: any) => JSON.parse(JSON.stringify(data));

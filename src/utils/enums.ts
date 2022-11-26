@@ -72,9 +72,11 @@ export enum Entities {
   Stock = 'Stock',
   Category = 'Category',
   Chat = 'Chat',
+  Notification = 'Notification',
 }
 
 export enum ApiErrors {
   NOT_FOUND = 'NOT_FOUND',
   TOKEN_EXPIRED = 'TOKEN_EXPIRED',
+  UNAUTHORIZED = 'UNAUTHORIZED'
 }

@@ -12,11 +12,18 @@ import { ApiTags } from '@nestjs/swagger';
 import { UserInterface } from 'src/interfaces/user.interface';
 import { UserService } from 'src/services/user.service';
 import { UserCreateDto, UserUpdateDto } from 'src/dtos/user.dto';
+import { generateRandomToken, isValidEmail } from 'src/utils/helpers';
+import { TokenParams } from 'src/interfaces/shared.interface';
+import { GlobalNotificationService } from 'src/services/global-notification.service';
+import environment from 'src/environments';
 
 @ApiTags('Users')
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly globalNotificationService: GlobalNotificationService,
+  ) {}
 
   /**
    * This method lists users
@@ -45,15 +52,20 @@ export class UserController {
   }
 
   /**
-   * This method creates a new user
+   * Admin uses this method to create a new user
    */
   @Post()
   async createUser(@Body() user: UserCreateDto): Promise<UserInterface> {
-    return await this.userService.create(user);
+    const passwordStringParams: TokenParams = {}; // use defaults
+    user.password = generateRandomToken(user, passwordStringParams);
+    user.status = true;
+    const newUser = await this.userService.create(user);
+    this.notifyUserOnCreation(user, `${environment.clientUrl}/login`);
+    return newUser;
   }
 
   /**
-   * This method updates a user
+   * Updates a user
    * @param updateUserDto
    * @param id
    * @returns
@@ -67,7 +79,7 @@ export class UserController {
   }
 
   /**
-   * This method deletes a user by id
+   * Deletes a user by id
    * @param id
    * @returns
    */
@@ -75,4 +87,20 @@ export class UserController {
   async delete(@Param('id') id: string): Promise<UserInterface> {
     return await this.userService.delete(id);
   }
+
+  /**
+   * Notifies an admin-created user
+   * @param user 
+   * @param clientUrl 
+   * @returns 
+   */
+  private notifyUserOnCreation = (user: UserCreateDto, clientUrl: string) => {
+    if (isValidEmail(user.loginId)) {
+      return this.globalNotificationService.sendNewUserCreationEmail(
+        user,
+        clientUrl,
+      );
+    }
+    this.globalNotificationService.sendNewUserCreationSms(user, clientUrl);
+  };
 }

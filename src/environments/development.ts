@@ -25,7 +25,7 @@ const development: EnvironmentVariables = {
     },
     smsGateway: SMSGateways.TERMII,
   },
-  clientUrl: 'https://localhost:30001',
+  clientUrl: 'http://localhost:3000',
 };
 
 export default development;
