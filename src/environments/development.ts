@@ -6,9 +6,9 @@ const development: EnvironmentVariables = {
     'mongodb+srv://tare_myn:tare_myn%40%23@cluster0.4izef.mongodb.net/circular_economy?retryWrites=true&w=majority',
   jwtSecretKey: 'secretDevKey',
   mailConfig: {
-    host: 'smtp.mailtrap.io',
-    user: '44da93d3eb2f08',
-    pass: 'b8156b67c1039e',
+    host: 'smtp://smtp.mailtrap.io:2525',
+    user: '6648073274e76d',
+    pass: '3bed5be23c02e8',
     defaultFrom: '"No Reply" <noreply@example.com>',
   },
   smsConfig: {
