@@ -63,9 +63,12 @@ export class AuthService {
    * @param user
    * @returns
    */
-  public login = async (user: UserInterface) => ({
-    access_token: this.jwtService.sign(copyToJson(user)),
-  });
+  public login = async (user: UserInterface) => {
+
+    return ({
+      access_token: this.jwtService.sign(copyToJson(user)),
+    })
+  };
 
   /**
    * Registers a user

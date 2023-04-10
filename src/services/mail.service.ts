@@ -8,7 +8,7 @@ export class MailService {
   constructor(private mailerService: MailerService) {}
 
   public sendSignUpEmail(user: UserSignUpDto, clientUrl: string) {
-    console.log('SENDING SIGNUP mail');
+
     this.mailerService.sendMail({
       to: user.loginId,
       // from: '"Support Team" <support@example.com>', // override default from
@@ -22,7 +22,7 @@ export class MailService {
   }
 
   public sendNewUserCreationEmail(user: UserCreateDto, clientUrl: string) {
-    console.log('SENDING New USER CREATION mail');
+
     this.mailerService.sendMail({
       to: user.loginId,
       // from: '"Support Team" <support@example.com>', // override default from

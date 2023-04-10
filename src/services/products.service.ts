@@ -4,13 +4,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ProductsInterface } from '../interfaces/products.interface';
 import { StocksInterface } from '../interfaces/stocks.interface';
 import { Schemata } from 'src/schemas';
+import { Entities } from 'src/utils/enums';
 
 @Injectable()
 export class ProductsService {
   constructor(
-    @InjectModel(Schemata.Product.name)
+    @InjectModel(Entities.Product)
     private productModel: Model<ProductsInterface>,
-    @InjectModel(Schemata.Stock.name)
+    @InjectModel(Entities.Stock)
     private stockModel: Model<StocksInterface>,
   ) {}
 

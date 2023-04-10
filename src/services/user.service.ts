@@ -3,17 +3,16 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { UserInterface } from 'src/interfaces/user.interface';
 import * as bcrypt from 'bcrypt';
-import { CurrencyTypes, LoginTypes } from 'src/utils/enums';
+import { Entities, LoginTypes } from 'src/utils/enums';
 import { UserCreateDto, UserSignUpDto, UserUpdateDto } from 'src/dtos/user.dto';
 import { isValidEmail } from 'src/utils/helpers';
 import { SearchService } from './search.service';
 import { Pagination } from 'src/interfaces/pagination.interface';
-import { Schemata } from 'src/schemas';
 
 @Injectable()
 export class UserService extends SearchService {
   constructor(
-    @InjectModel(Schemata.User.name) private userModel: Model<UserInterface>,
+    @InjectModel(Entities.User) private userModel: Model<UserInterface>,
   ) {
     super(userModel);
   }

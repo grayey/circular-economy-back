@@ -97,7 +97,11 @@ export default class SmsService {
       type: 'plain',
       channel: 'generic',
     };
-
-    return this.axiosService.post(apiUrl, data);
+    try {
+      const termiiSmsResponse = await this.axiosService.post(apiUrl, data);
+      return termiiSmsResponse;
+    } catch (e) {
+      console.log({ e });
+    }
   };
 }

@@ -69,6 +69,7 @@ export enum Entities {
   Product = 'Product',
   Review = 'Review',
   Role = 'Role',
+  Aggregator = 'Aggregator',
   Stock = 'Stock',
   Category = 'Category',
   Chat = 'Chat',
@@ -78,5 +79,5 @@ export enum Entities {
 export enum ApiErrors {
   NOT_FOUND = 'NOT_FOUND',
   TOKEN_EXPIRED = 'TOKEN_EXPIRED',
-  UNAUTHORIZED = 'UNAUTHORIZED'
+  UNAUTHORIZED = 'UNAUTHORIZED',
 }

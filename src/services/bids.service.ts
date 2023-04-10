@@ -3,14 +3,15 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { BidsInterface } from '../interfaces/bids.interface';
 import { StocksInterface } from '../interfaces/stocks.interface';
+import { Entities } from 'src/utils/enums';
 
 @Injectable()
 export class BidsService {
   public dbWork;
 
   constructor(
-    @InjectModel('Bids') private bidModel: Model<BidsInterface>,
-    @InjectModel('Stocks') private stockModel: Model<StocksInterface>,
+    @InjectModel(Entities.Bid) private bidModel: Model<BidsInterface>,
+    @InjectModel(Entities.Stock) private stockModel: Model<StocksInterface>,
   ) {
     // this.dbWork = new DbWorker(bidModel);
   }

@@ -7,10 +7,8 @@ import { AuthController } from 'src/controllers/auth.controller';
 import { AuthService } from 'src/services/auth.service';
 import { LocalStrategy } from 'src/utils/strategies/local.strategy';
 import { jwtConstants } from 'src/utils/constants';
-import { MailModule } from 'src/modules/mail.module';
-import { SmsModule } from 'src/modules/sms.module';
-import { Schemata } from 'src/schemas';
 import { NotificationModule } from './notification.module';
+import { Schemata } from 'src/schemas';
 
 @Module({
   imports: [

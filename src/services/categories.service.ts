@@ -2,11 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CategoriesInterface } from 'src/interfaces/categories.interface';
+import { Entities } from 'src/utils/enums';
 
 @Injectable()
 export class CategoriesService {
   constructor(
-    @InjectModel('Categories')
+    @InjectModel(Entities.Category)
     private categoryModel: Model<CategoriesInterface>,
   ) {}
 

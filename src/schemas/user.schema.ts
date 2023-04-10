@@ -1,8 +1,12 @@
 import { Schema } from 'mongoose';
-import { LoginTypes, UserTypes } from 'src/utils/enums';
+import { Entities, LoginTypes, UserTypes } from 'src/utils/enums';
 
 const UsersSchema = new Schema(
   {
+    aggregator: {
+      type: Schema.Types.ObjectId,
+      ref: Entities.Aggregator,
+    },
     loginId: {
       type: String,
       max: 100,

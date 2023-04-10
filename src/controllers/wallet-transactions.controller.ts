@@ -41,9 +41,6 @@ export class WalletTransactionsController {
 
     @Post()
     create(@Body() createWalletTransactionDto): Promise<WalletsInterface> {
-        console.log({
-            createWalletTransactionDto
-        })
         return this.wallettransactionService.createTransaction(createWalletTransactionDto);
     }
 

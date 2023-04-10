@@ -21,14 +21,15 @@ type Schemas = {
 };
 
 export const Schemata: Schemas = {
-  OTP: { name: 'Otp', schema: OtpSchema },
-  User: { name: 'Users', schema: UsersSchema },
-  Bid: { name: 'Bids', schema: BidsSchema },
-  Product: { name: 'Products', schema: ProductsSchema },
-  Review: { name: 'Reviews', schema: ReviewsSchema },
-  Role: { name: 'Roles', schema: RolesSchema },
-  Stock: { name: 'Stocks', schema: StocksSchema },
-  Category: { name: 'Categories', schema: CategoriesSchema },
-  Chat: { name: 'Chats', schema: ChatsSchema },
-  Notification: { name: 'Notification', schema: NotificationSchema },
+  OTP: { name: Entities.OTP, schema: OtpSchema },
+  User: { name: Entities.User, schema: UsersSchema },
+  Bid: { name: Entities.Bid, schema: BidsSchema },
+  Product: { name: Entities.Product, schema: ProductsSchema },
+  Review: { name: Entities.Review, schema: ReviewsSchema },
+  Role: { name: Entities.Role, schema: RolesSchema },
+  Stock: { name: Entities.Stock, schema: StocksSchema },
+  Category: { name: Entities.Category, schema: CategoriesSchema },
+  Chat: { name: Entities.Chat, schema: ChatsSchema },
+  Notification: { name: Entities.Notification, schema: NotificationSchema },
+  Aggregator: { name: Entities.Aggregator, schema: NotificationSchema },
 };
