@@ -23,9 +23,13 @@ export const AggregatorsSchema = new Schema(
       type: Boolean,
       default: true,
     },
-    users: {
+    [Entities.User]: {
       type: [Schema.Types.ObjectId],
       ref: Entities.User,
+    },
+    isSuper: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true },

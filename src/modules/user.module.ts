@@ -6,7 +6,10 @@ import { Schemata } from 'src/schemas';
 import { NotificationModule } from './notification.module';
 
 @Module({
-  imports: [MongooseModule.forFeature([Schemata.User]), NotificationModule],
+  imports: [
+    MongooseModule.forFeature([Schemata.User, Schemata.Aggregator]),
+    NotificationModule,
+  ],
   controllers: [UserController],
   providers: [UserService],
   exports: [UserService],

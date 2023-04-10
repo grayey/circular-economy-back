@@ -64,10 +64,9 @@ export class AuthService {
    * @returns
    */
   public login = async (user: UserInterface) => {
-
-    return ({
+    return {
       access_token: this.jwtService.sign(copyToJson(user)),
-    })
+    };
   };
 
   /**

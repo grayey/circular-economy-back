@@ -38,12 +38,22 @@ export class UserSignUpDto extends UserDto {
     type: String,
     description: 'Required',
   })
+  @ApiProperty({
+    type: String,
+    description: 'Required',
+  })
+  aggregatorId?:string;
   password: string;
 }
 
 export class UserCreateDto extends UserDto {
   password: string;
   status: boolean;
+  @ApiProperty({
+    type: String,
+    description: 'Required',
+  })
+  aggregatorId:string;
   @ApiProperty({
     type: String,
     description: 'Optional',
@@ -67,6 +77,11 @@ export class UserUpdateDto extends UserDto {
     description: 'Optional',
   })
   status?: boolean;
+  @ApiProperty({
+    type: String,
+    description: 'Required',
+  })
+  aggregatorId:string;
 }
 
 export class UserVerfiyDto {

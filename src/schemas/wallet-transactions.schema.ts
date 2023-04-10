@@ -1,17 +1,21 @@
 import { Schema } from 'mongoose';
 import {
+  Entities,
   TransactionChannels,
   TransactionDocument,
   TransactionHoldingStatus,
   TransactionTypes,
 } from 'src/utils/enums';
-import { Schemata } from '.';
 
 export const WalletSchema = new Schema(
   {
+    aggregator: {
+      type: Schema.Types.ObjectId,
+      ref: Entities.Aggregator,
+    },
     owner: {
       type: Schema.Types.ObjectId,
-      ref: Schemata.User.name,
+      ref: Entities.User,
     },
     balance: {
       type: String,
@@ -30,11 +34,11 @@ export const TransactionSchema = new Schema(
   {
     sender: {
       type: Schema.Types.ObjectId,
-      ref: Schemata.User.name,
+      ref: Entities.User,
     },
     receiver: {
       type: Schema.Types.ObjectId,
-      ref: Schemata.User.name,
+      ref: Entities.User,
     },
     amount: {
       type: String,

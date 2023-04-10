@@ -3,7 +3,7 @@ import { Entities, LoginTypes, UserTypes } from 'src/utils/enums';
 
 const UsersSchema = new Schema(
   {
-    aggregator: {
+    [Entities.Aggregator]: {
       type: Schema.Types.ObjectId,
       ref: Entities.Aggregator,
     },

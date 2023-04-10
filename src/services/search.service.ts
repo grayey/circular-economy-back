@@ -8,16 +8,27 @@ export class SearchService {
     this.entityModel = entityModel;
   }
 
+  private populateQuery = (populate, query) => {
+    if (populate) {
+      const entities = populate.split('|');
+      for (const entity of entities) {
+        try {
+          query.populate(entity);
+        } catch (e) {}
+      }
+    }
+
+    return query;
+  };
+
   protected paginate = async (
     searchTerm: string,
-    { skip, limit }: Pagination,
+    { skip, limit, populate }: Pagination,
   ) => {
     const searchQuery = searchTerm ? { $text: { $search: searchTerm } } : {};
-    const query = this.entityModel
-      .find(searchQuery)
-      .sort({ _id: 1 })
-      .skip(skip);
-
+    let query = this.entityModel.find(searchQuery);
+    query = this.populateQuery(populate, query);
+    query.sort({ _id: 1 }).skip(skip);
     if (limit) {
       query.limit(limit);
     }

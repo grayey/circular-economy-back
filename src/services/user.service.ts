@@ -8,15 +8,30 @@ import { UserCreateDto, UserSignUpDto, UserUpdateDto } from 'src/dtos/user.dto';
 import { isValidEmail } from 'src/utils/helpers';
 import { SearchService } from './search.service';
 import { Pagination } from 'src/interfaces/pagination.interface';
+import { AggregatorsInterface } from 'src/interfaces/aggregators.interface';
 
 @Injectable()
 export class UserService extends SearchService {
   constructor(
     @InjectModel(Entities.User) private userModel: Model<UserInterface>,
+    @InjectModel(Entities.Aggregator)
+    private aggregatorModel: Model<AggregatorsInterface>,
   ) {
     super(userModel);
   }
 
+  public async find(
+    lookFor,
+  ): Promise<{ results: UserInterface[]; count: number }> {
+    const results: UserInterface[] = await this.userModel
+      .find(lookFor)
+      .populate(Entities.Aggregator);
+    const count = await this.userModel.count();
+    return {
+      results,
+      count,
+    };
+  }
   /**
    * List all users
    * @param searchTerm
@@ -26,7 +41,11 @@ export class UserService extends SearchService {
   public async findAll(
     searchTerm: string,
     pagination: Pagination,
+    lookFor?: any,
   ): Promise<{ results: UserInterface[]; count: number }> {
+    if (!pagination.paginate) {
+      return this.find(lookFor);
+    }
     return await this.paginate(searchTerm, pagination);
   }
 
@@ -42,6 +61,7 @@ export class UserService extends SearchService {
   ): Promise<UserInterface> {
     return await this.userModel
       .findOne({ ...search })
+      .populate(Entities.Aggregator)
       .select(withPassword ? '+password' : '');
   }
 
@@ -60,10 +80,16 @@ export class UserService extends SearchService {
     const userModel = new this.userModel({
       ...user,
       loginType,
+      [Entities.Aggregator]: user.aggregatorId,
       password: hashedPassword,
     });
-    const newUser = await userModel.save();
+    const newUser: UserInterface = await userModel.save();
     newUser.password = undefined;
+    const aggregator = await this.aggregatorModel.findOne({
+      _id: user.aggregatorId,
+    });
+    aggregator[Entities.User].push(newUser._id);
+    aggregator.save();
     return newUser;
   }
 

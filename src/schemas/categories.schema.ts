@@ -1,7 +1,12 @@
 import { Schema } from 'mongoose';
+import { Entities } from 'src/utils/enums';
 
 export const CategoriesSchema = new Schema(
   {
+    aggregator: {
+      type: Schema.Types.ObjectId,
+      ref: Entities.Aggregator,
+    },
     name: {
       type: String,
       max: 50,

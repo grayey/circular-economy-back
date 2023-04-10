@@ -1,5 +1,6 @@
 import { Schema } from 'mongoose';
 import { Entities } from 'src/utils/enums';
+import { AggregatorsSchema } from './aggregators.schema';
 import { BidsSchema } from './bids.schema';
 import { CategoriesSchema } from './categories.schema';
 import { ChatsSchema } from './chats.schema';
@@ -31,5 +32,5 @@ export const Schemata: Schemas = {
   Category: { name: Entities.Category, schema: CategoriesSchema },
   Chat: { name: Entities.Chat, schema: ChatsSchema },
   Notification: { name: Entities.Notification, schema: NotificationSchema },
-  Aggregator: { name: Entities.Aggregator, schema: NotificationSchema },
+  Aggregator: { name: Entities.Aggregator, schema: AggregatorsSchema },
 };

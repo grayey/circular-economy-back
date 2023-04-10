@@ -2,6 +2,7 @@ import { LoginTypes, UserTypes } from 'src/utils/enums';
 
 export interface UserInterface {
   readonly _id: string;
+  readonly aggregatorId: string;
   readonly loginId: string;
   readonly loginType: LoginTypes;
   readonly userType: UserTypes;

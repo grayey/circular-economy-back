@@ -1,8 +1,12 @@
 import { Schema } from 'mongoose';
-import { BidStages, RejectionTypes } from 'src/utils/enums';
+import { BidStages, Entities, RejectionTypes } from 'src/utils/enums';
 
 export const BidsSchema = new Schema(
   {
+    aggregator: {
+      type: Schema.Types.ObjectId,
+      ref: Entities.Aggregator,
+    },
     buyer: {
       type: Schema.Types.ObjectId,
       ref: 'Users',

@@ -30,9 +30,14 @@ export class UserController {
    */
   @Get()
   async getAllUsers(
-    @Query() { q, skip, limit },
+    @Query() { q, skip, limit, paginate = true, include },
   ): Promise<{ results: UserInterface[]; count: number }> {
-    return await this.userService.findAll(q, { skip, limit });
+    return await this.userService.findAll(q, {
+      skip,
+      limit,
+      paginate,
+      populate: include,
+    });
   }
 
   /**
@@ -57,7 +62,8 @@ export class UserController {
   @Post()
   async createUser(@Body() user: UserCreateDto): Promise<UserInterface> {
     const passwordStringParams: TokenParams = {}; // use defaults
-    user.password = generateRandomToken(user, passwordStringParams);
+    // user.password = generateRandomToken(user, passwordStringParams);
+    user.password = 'password';
     user.status = true;
     const newUser = await this.userService.create(user);
     this.notifyUserOnCreation(user, `${environment.clientUrl}/login`);
@@ -90,9 +96,9 @@ export class UserController {
 
   /**
    * Notifies an admin-created user
-   * @param user 
-   * @param clientUrl 
-   * @returns 
+   * @param user
+   * @param clientUrl
+   * @returns
    */
   private notifyUserOnCreation = (user: UserCreateDto, clientUrl: string) => {
     if (isValidEmail(user.loginId)) {

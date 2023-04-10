@@ -3,12 +3,12 @@ import { SMSGateways } from 'src/utils/enums';
 
 const development: EnvironmentVariables = {
   mongoUri:
-    'mongodb+srv://Sheyilah:USER%40admin1@cluster0.yudcpim.mongodb.net/?retryWrites=true&w=majority',
+    'mongodb+srv://tare_myn:tare_myn%40%23@cluster0.4izef.mongodb.net/circular_economy?retryWrites=true&w=majority',
   jwtSecretKey: 'secretDevKey',
   mailConfig: {
     host: 'smtp.mailtrap.io',
-    user: '6648073274e76d',
-    pass: '3bed5be23c02e8',
+    user: '44da93d3eb2f08',
+    pass: 'b8156b67c1039e',
     defaultFrom: '"No Reply" <noreply@example.com>',
   },
   smsConfig: {
