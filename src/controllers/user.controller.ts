@@ -34,7 +34,7 @@ export class UserController {
    * This method lists users
    */
   @Get()
-  @Permissions('')
+  @Permissions('/api/user')
   @UseGuards(PermissionsGuard)
   async getAllUsers(
     @Query() { q, skip, limit, paginate = true, include },

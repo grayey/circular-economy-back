@@ -20,7 +20,7 @@ export class UserAuthGuard implements CanActivate {
     }
     try {
       const payload = await this.jwtService.verifyAsync(token, {
-        ...jwtConstants,
+        secret: jwtConstants.secret,
       });
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers

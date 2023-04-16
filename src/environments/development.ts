@@ -5,6 +5,8 @@ const development: EnvironmentVariables = {
   mongoUri:
     'mongodb+srv://tare_myn:tare_myn%40%23@cluster0.4izef.mongodb.net/circular_economy?retryWrites=true&w=majority',
   jwtSecretKey: 'secretDevKey',
+  jwtAccessTokenExpirationTime: 24 * 60 * 60, // 1 day
+  jwtRefreshTokenExpirationTime: 7 * 24 * 60 * 60, // 7 days
   mailConfig: {
     host: 'smtp.mailtrap.io',
     user: '44da93d3eb2f08',

@@ -9,6 +9,8 @@ import { UserCreateDto, UserSignUpDto } from 'src/dtos/user.dto';
 import { formatErrors } from 'src/utils/helpers';
 import { ApiErrors } from 'src/utils/enums';
 import { copyToJson } from 'src/utils/formatters';
+import { jwtConstants } from 'src/utils/constants';
+import environment from 'src/environments';
 
 @Injectable()
 export class AuthService {
@@ -64,8 +66,13 @@ export class AuthService {
    * @returns
    */
   public login = async (user: UserInterface) => {
+    const access_token = this.jwtService.sign(copyToJson(user), {
+      expiresIn: jwtConstants.expiresIn,
+    });
+    const cookie_token = `Refresh=${access_token}; HttpOnly; Path=/; Max-Age=${environment.jwtRefreshTokenExpirationTime}`;
     return {
-      access_token: this.jwtService.sign(copyToJson(user)),
+      access_token,
+      cookie_token,
     };
   };
 

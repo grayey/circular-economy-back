@@ -2,6 +2,7 @@ import environment from 'src/environments';
 
 export const jwtConstants = {
   secret: environment.jwtSecretKey,
+  expiresIn: environment.jwtAccessTokenExpirationTime,
 };
 
 export const emailTemplates = {
