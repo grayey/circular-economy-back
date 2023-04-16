@@ -16,7 +16,7 @@ import { TasksService } from 'src/services/tasks.service';
 import { TasksInterface } from 'src/interfaces/tasks.interface';
 
 @ApiTags('Tasks')
-@Controller('tasks')
+@Controller('task')
 export class TasksController {
   constructor(private readonly taskService: TasksService) {}
 

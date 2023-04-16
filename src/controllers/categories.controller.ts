@@ -10,6 +10,7 @@ import {
   Res,
   Param,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -18,13 +19,20 @@ import { CategoriesInterface } from 'src/interfaces/categories.interface';
 import { CategoryDto } from 'src/dtos/categories.dto';
 
 @ApiTags('Categories')
-@Controller('categories')
+@Controller('category')
 export class CategoriesController {
   constructor(private readonly categoryService: CategoriesService) {}
 
   @Get()
-  findAll(): Promise<CategoriesInterface[] | CategoryDto[]> {
-    return this.categoryService.findAll();
+  getAllCategories(
+    @Query() { q, skip, limit, paginate = true, include },
+  ): Promise<{ results: CategoriesInterface[]; count: number }> {
+    return this.categoryService.findAll(q, {
+      skip,
+      limit,
+      paginate,
+      populate: include,
+    });
   }
 
   @Get(':id')

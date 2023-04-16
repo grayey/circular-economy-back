@@ -18,7 +18,7 @@ import { StocksInterface } from 'src/interfaces/stocks.interface';
 import { BidDto } from 'src/dtos/bids.dto';
 
 @ApiTags('Bids')
-@Controller('bids')
+@Controller('bid')
 export class BidsController {
   constructor(private readonly bidService: BidsService) {}
 

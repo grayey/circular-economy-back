@@ -7,6 +7,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UserInterface } from 'src/interfaces/user.interface';
@@ -16,9 +17,13 @@ import { generateRandomToken, isValidEmail } from 'src/utils/helpers';
 import { TokenParams } from 'src/interfaces/shared.interface';
 import { GlobalNotificationService } from 'src/services/global-notification.service';
 import environment from 'src/environments';
+import { Permissions } from 'src/decorators/permission.decorator';
+import { PermissionsGuard } from 'src/guards/permissions.guard';
+import { UserAuthGuard } from 'src/guards/userAuth.guard';
 
 @ApiTags('Users')
-@Controller('users')
+@UseGuards(UserAuthGuard)
+@Controller('user')
 export class UserController {
   constructor(
     private readonly userService: UserService,
@@ -29,6 +34,8 @@ export class UserController {
    * This method lists users
    */
   @Get()
+  @Permissions('')
+  @UseGuards(PermissionsGuard)
   async getAllUsers(
     @Query() { q, skip, limit, paginate = true, include },
   ): Promise<{ results: UserInterface[]; count: number }> {

@@ -15,6 +15,12 @@ export enum UserTypes {
   ADMIN = 'ADMIN',
 }
 
+export enum AdminTypes {
+  OWNER = 'OWNER',
+  AGGREGATOR = 'AGGREGATOR',
+  NONE = 'NONE',
+}
+
 export enum SMSGateways {
   TWILIO = 'twilio',
   TERMII = 'termii',

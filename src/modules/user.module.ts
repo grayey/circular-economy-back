@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserController } from 'src/controllers/user.controller';
 import { UserService } from 'src/services/user.service';
@@ -9,6 +10,7 @@ import { NotificationModule } from './notification.module';
   imports: [
     MongooseModule.forFeature([Schemata.User, Schemata.Aggregator]),
     NotificationModule,
+    JwtModule,
   ],
   controllers: [UserController],
   providers: [UserService],

@@ -17,7 +17,7 @@ import { AggregatorsService } from 'src/services/aggregators.service';
 import { AggregatorsInterface } from 'src/interfaces/aggregators.interface';
 
 @ApiTags('Aggregators')
-@Controller('aggregators')
+@Controller('aggregator')
 export class AggregatorsController {
   constructor(private readonly aggregatorService: AggregatorsService) {}
 

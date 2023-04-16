@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { Entities, LoginTypes, UserTypes } from 'src/utils/enums';
+import { AdminTypes, Entities, LoginTypes, UserTypes } from 'src/utils/enums';
 
 const UsersSchema = new Schema(
   {
@@ -39,6 +39,11 @@ const UsersSchema = new Schema(
       type: String,
       enum: Object.values(UserTypes),
       default: UserTypes.CUSTOMER,
+    },
+    adminType: {
+      type: String,
+      enum: Object.values(AdminTypes),
+      default: AdminTypes.NONE,
     },
     status: {
       type: Boolean,

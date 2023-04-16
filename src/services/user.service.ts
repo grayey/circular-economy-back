@@ -33,7 +33,7 @@ export class UserService extends SearchService {
     };
   }
   /**
-   * List all users
+   * Search all users
    * @param searchTerm
    * @param pagination
    * @returns Promise<{ results: UserInterface[]; count: number }>

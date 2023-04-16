@@ -18,7 +18,7 @@ import { ProductsInterface } from 'src/interfaces/products.interface';
 import { StocksInterface } from 'src/interfaces/stocks.interface';
 
 @ApiTags('Products')
-@Controller('products')
+@Controller('product')
 export class ProductsController {
   constructor(private readonly productService: ProductsService) {}
 

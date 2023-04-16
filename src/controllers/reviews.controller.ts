@@ -16,7 +16,7 @@ import { ReviewsService } from 'src/services/reviews.service';
 import { ReviewsInterface } from 'src/interfaces/reviews.interface';
 
 @ApiTags('Reviews')
-@Controller('reviews')
+@Controller('review')
 export class ReviewsController {
   constructor(private readonly reviewService: ReviewsService) {}
 

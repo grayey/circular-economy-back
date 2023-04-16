@@ -16,7 +16,7 @@ import { ChatsService } from '../services/chats.service';
 import { ChatsInterface } from '../interfaces/chats.interface';
 
 @ApiTags('Chats')
-@Controller('chats')
+@Controller('chat')
 export class ChatsController {
   constructor(private readonly chatService: ChatsService) {}
 
