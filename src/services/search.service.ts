@@ -11,13 +11,8 @@ export class SearchService {
   private populateQuery = (populate, query) => {
     if (populate) {
       const entities = populate.split('|');
-      for (const entity of entities) {
-        try {
-          query.populate(entity);
-        } catch (e) {}
-      }
+      query.populate(entities);
     }
-
     return query;
   };
 

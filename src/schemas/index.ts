@@ -10,6 +10,7 @@ import { ProductsSchema } from './products.schema';
 import { ReviewsSchema } from './reviews.schema';
 import { RolesSchema } from './roles.schema';
 import { StocksSchema } from './stocks.schema';
+import { TasksSchema } from './tasks.schema';
 import { UsersSchema } from './user.schema';
 
 interface SchemaInterface {
@@ -33,4 +34,5 @@ export const Schemata: Schemas = {
   Chat: { name: Entities.Chat, schema: ChatsSchema },
   Notification: { name: Entities.Notification, schema: NotificationSchema },
   Aggregator: { name: Entities.Aggregator, schema: AggregatorsSchema },
+  Task: { name: Entities.Task, schema: TasksSchema },
 };

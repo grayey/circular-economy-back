@@ -23,9 +23,14 @@ export class RolesController {
 
   @Get()
   async getAllRoles(
-    @Query() { q, skip, limit },
+    @Query() { q, skip, limit, paginate = true, include },
   ): Promise<{ results: RolesInterface[]; count: number }> {
-    return await this.roleService.findAll(q, { skip, limit });
+    return await this.roleService.findAll(q, {
+      skip,
+      limit,
+      paginate,
+      populate: include,
+    });
   }
 
   @Get(':id')

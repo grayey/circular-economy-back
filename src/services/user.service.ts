@@ -3,12 +3,13 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { UserInterface } from 'src/interfaces/user.interface';
 import * as bcrypt from 'bcrypt';
-import { Entities, LoginTypes } from 'src/utils/enums';
+import { Entities, LoginTypes, UserTypes } from 'src/utils/enums';
 import { UserCreateDto, UserSignUpDto, UserUpdateDto } from 'src/dtos/user.dto';
 import { isValidEmail } from 'src/utils/helpers';
 import { SearchService } from './search.service';
 import { Pagination } from 'src/interfaces/pagination.interface';
 import { AggregatorsInterface } from 'src/interfaces/aggregators.interface';
+import { RolesInterface } from 'src/interfaces/roles.interface';
 
 @Injectable()
 export class UserService extends SearchService {
@@ -16,6 +17,8 @@ export class UserService extends SearchService {
     @InjectModel(Entities.User) private userModel: Model<UserInterface>,
     @InjectModel(Entities.Aggregator)
     private aggregatorModel: Model<AggregatorsInterface>,
+    @InjectModel(Entities.Role)
+    private roleModel: Model<RolesInterface>,
   ) {
     super(userModel);
   }
@@ -25,7 +28,7 @@ export class UserService extends SearchService {
   ): Promise<{ results: UserInterface[]; count: number }> {
     const results: UserInterface[] = await this.userModel
       .find(lookFor)
-      .populate(Entities.Aggregator);
+      .populate([Entities.Aggregator, Entities.Role]);
     const count = await this.userModel.count();
     return {
       results,
@@ -61,7 +64,7 @@ export class UserService extends SearchService {
   ): Promise<UserInterface> {
     return await this.userModel
       .findOne({ ...search })
-      .populate(Entities.Aggregator)
+      .populate([Entities.Aggregator, Entities.Role])
       .select(withPassword ? '+password' : '');
   }
 
@@ -79,17 +82,29 @@ export class UserService extends SearchService {
       : LoginTypes.PHONE;
     const userModel = new this.userModel({
       ...user,
+      password: hashedPassword,
       loginType,
       [Entities.Aggregator]: user.aggregatorId,
-      password: hashedPassword,
+      [Entities.Role]: user.roleId,
     });
     const newUser: UserInterface = await userModel.save();
-    newUser.password = undefined;
+
     const aggregator = await this.aggregatorModel.findOne({
       _id: user.aggregatorId,
     });
     aggregator[Entities.User].push(newUser._id);
     aggregator.save();
+
+    if (user.userType === UserTypes.ADMIN) {
+      console.log('Create user with role');
+      const role = await this.roleModel.findOne({
+        _id: user.roleId,
+      });
+      role[Entities.User].push(newUser._id);
+      role.save();
+    }
+
+    newUser.password = undefined;
     return newUser;
   }
 

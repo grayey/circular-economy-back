@@ -7,6 +7,10 @@ const UsersSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: Entities.Aggregator,
     },
+    [Entities.Role]: {
+      type: Schema.Types.ObjectId,
+      ref: Entities.Role,
+    },
     loginId: {
       type: String,
       max: 100,

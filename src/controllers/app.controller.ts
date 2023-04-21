@@ -3,7 +3,7 @@ import { ApiSuccessResponse } from 'src/interfaces/api.interface';
 import { responseOk } from 'src/utils/formatters';
 import { AppService } from 'src/services/app.service';
 
-@Controller('')
+@Controller('app')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 

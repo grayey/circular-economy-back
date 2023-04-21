@@ -10,6 +10,7 @@ export interface UserInterface {
   signUpToken?: string;
   tokenExpires?: string;
   status: boolean;
+  readonly roleId?: string;
   readonly updatedAt: string;
   readonly createdAt: string;
   readonly save?: Function;

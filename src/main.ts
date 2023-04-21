@@ -12,7 +12,6 @@ const bootstrap = async () => {
     new ErrorsInterceptor(),
     new TransformInterceptor(),
   );
-
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Circular Economy')
     .setDescription('The Circular Economy API Description by Dotisense')
@@ -22,5 +21,11 @@ const bootstrap = async () => {
   SwaggerModule.setup('api', app, swaggerDocument);
 
   await app.listen(8000);
+
+  return app;
 };
-bootstrap();
+const application = bootstrap();
+
+export default application;
+
+

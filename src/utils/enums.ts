@@ -80,6 +80,7 @@ export enum Entities {
   Category = 'Category',
   Chat = 'Chat',
   Notification = 'Notification',
+  Task = 'Task'
 }
 
 export enum ApiErrors {

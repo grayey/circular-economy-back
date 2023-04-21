@@ -8,7 +8,11 @@ import { NotificationModule } from './notification.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([Schemata.User, Schemata.Aggregator]),
+    MongooseModule.forFeature([
+      Schemata.User,
+      Schemata.Aggregator,
+      Schemata.Role,
+    ]),
     NotificationModule,
     JwtModule,
   ],
