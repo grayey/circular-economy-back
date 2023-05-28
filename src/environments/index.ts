@@ -1,7 +1,13 @@
-import { EnvironmentVariables } from "src/interfaces/environment.interface";
-import { AppEnvironments } from "src/utils/enums";
+import * as fs from 'fs';
+import { EnvironmentVariables } from 'src/interfaces/environment.interface';
 
-const env = process.env.NODE_ENV;
-const appMode = env ? env.trim() : AppEnvironments.DEVELOPMENT;
-const environment: EnvironmentVariables = require(`./${appMode}`).default;
+let environment: EnvironmentVariables;
+try {
+  environment = JSON.parse(
+    fs.readFileSync('src/environments/env.json', 'utf8'),
+  );
+} catch (e) {
+  environment = {} as EnvironmentVariables;
+}
+
 export default environment;

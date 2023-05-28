@@ -1,6 +1,6 @@
 import { SMSGateways } from 'src/utils/enums';
 
-export interface EnvironmentVariables {
+export interface  EnvironmentVariables {
   mongoUri: string;
   jwtSecretKey: string;
   jwtAccessTokenExpirationTime: number;
