@@ -67,4 +67,19 @@ export class RolesService extends SearchService {
       new: true,
     });
   }
+
+  async assignPermissions(
+    id: string,
+    permissionIds: Array<string>,
+  ): Promise<RolesInterface> {
+    return await this.roleModel.findByIdAndUpdate(
+      id,
+      {
+        [Entities.Task]: permissionIds,
+      },
+      {
+        new: true,
+      },
+    );
+  }
 }

@@ -5,22 +5,54 @@ import { ProductsInterface } from '../interfaces/products.interface';
 import { StocksInterface } from '../interfaces/stocks.interface';
 import { Schemata } from 'src/schemas';
 import { Entities } from 'src/utils/enums';
+import { Pagination } from 'src/interfaces/pagination.interface';
+import { SearchService } from './search.service';
 
 @Injectable()
-export class ProductsService {
+export class ProductsService extends SearchService {
   constructor(
     @InjectModel(Entities.Product)
     private productModel: Model<ProductsInterface>,
     @InjectModel(Entities.Stock)
     private stockModel: Model<StocksInterface>,
-  ) {}
-
-  async findAll(): Promise<ProductsInterface[]> {
-    return await this.productModel
-      .find()
-      .populate('featuredStock')
-      .populate('owner');
+  ) {
+    super(productModel);
   }
+
+  public async find(
+    lookFor,
+  ): Promise<{ results: ProductsInterface[]; count: number }> {
+    const results: ProductsInterface[] = await this.productModel.find(lookFor);
+    const count = await this.productModel.count();
+    return {
+      results,
+      count,
+    };
+  }
+
+  /**
+   * Search all categories
+   * @param searchTerm
+   * @param pagination
+   * @returns Promise<{ results: ProductsInterface[]; count: number }>
+   */
+  public async findAll(
+    searchTerm: string,
+    pagination: Pagination,
+    lookFor?: any,
+  ): Promise<{ results: ProductsInterface[]; count: number }> {
+    if (!pagination.paginate) {
+      return this.find(lookFor);
+    }
+    return await this.paginate(searchTerm, pagination);
+  }
+
+  // async findAll(): Promise<ProductsInterface[]> {
+  //   return await this.productModel
+  //     .find()
+  //     .populate('featuredStock')
+  //     .populate('owner');
+  // }
 
   async findProductsByOwnerId(owner): Promise<ProductsInterface[] | any> {
     return await this.productModel

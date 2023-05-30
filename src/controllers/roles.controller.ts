@@ -53,6 +53,14 @@ export class RolesController {
     return this.roleService.update(id, updateRoleDto);
   }
 
+  @Put(':id/permissions')
+  assignPermissions(
+    @Body() permissionIds: Array<string>,
+    @Param('id') id,
+  ): Promise<RolesInterface> {
+    return this.roleService.assignPermissions(id, permissionIds);
+  }
+
   // @Patch(':id')
   // findByIdAndToggleEnable(@Param('id') id): Promise<RolesInterface> {
   //     return this.RoleService.findByIdAndToggleEnable(id);

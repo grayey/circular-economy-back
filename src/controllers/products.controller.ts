@@ -10,6 +10,7 @@ import {
   Res,
   Param,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -23,8 +24,15 @@ export class ProductsController {
   constructor(private readonly productService: ProductsService) {}
 
   @Get()
-  findAll(): Promise<ProductsInterface[]> {
-    return this.productService.findAll();
+  getAllProducts(
+    @Query() { q, skip, limit, paginate = true, include },
+  ): Promise<{ results: ProductsInterface[]; count: number }> {
+    return this.productService.findAll(q, {
+      skip,
+      limit,
+      paginate,
+      populate: include,
+    });
   }
 
   @Get(':id')

@@ -15,10 +15,6 @@ export const RolesSchema = new Schema(
       type: Boolean,
       default: true,
     },
-    tasks: {
-      type: Array,
-      default: [],
-    },
     [Entities.User]: {
       type: [Schema.Types.ObjectId],
       ref: Entities.User,
@@ -31,6 +27,7 @@ export const RolesSchema = new Schema(
     [Entities.Task]: {
       type: [Schema.Types.ObjectId],
       ref: Entities.Task,
+      default: [],
     },
   },
   { timestamps: true },
