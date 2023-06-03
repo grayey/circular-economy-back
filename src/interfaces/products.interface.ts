@@ -1,10 +1,11 @@
 import { Document } from 'mongoose';
+import { Entities } from 'src/utils/enums';
 
 export interface ProductsInterface extends Document {
   id?: string;
   name: string;
   slug: string;
-  category: any;
+  [Entities.Category]: string;
   featuredStock: any;
   keywords?: any;
   stocks?: any;

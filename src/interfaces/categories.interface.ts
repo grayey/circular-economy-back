@@ -2,7 +2,7 @@ import { Document } from 'mongoose';
 
 export interface CategoriesInterface extends Document {
   id?: string;
-  parentId?: string;
+  parentCategory?: string;
   name: string;
   description: string;
   ancestors:any;

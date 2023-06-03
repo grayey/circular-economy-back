@@ -65,6 +65,7 @@ export class ProductsService extends SearchService {
     const whereKey = idOrSlug.includes('.html') ? 'slug' : '_id';
     const product = await this.productModel
       .findOne({ [whereKey]: idOrSlug })
+      .populate(Entities.Category)
       .populate({
         path: 'featuredStock',
         populate: {
@@ -74,19 +75,28 @@ export class ProductsService extends SearchService {
           },
         },
       })
-      .populate('owner');
-
-    const productWithStocks = { ...product }['_doc'];
-    const stocks = await this.stockModel
-      .find({ productId: product._id })
       .populate({
-        path: 'bids',
+        path: Entities.Stock,
         populate: {
-          path: 'buyer review',
+          path: 'bids',
+          populate: {
+            path: 'buyer review',
+          },
         },
-      });
-    productWithStocks['stocks'] = stocks;
-    return productWithStocks;
+      })
+      .populate(Entities.User);
+
+    // const productWithStocks = { ...product }['_doc'];
+    // const stocks = await this.stockModel
+    //   .find({ productId: product._id })
+    //   .populate({
+    //     path: 'bids',
+    //     populate: {
+    //       path: 'buyer review',
+    //     },
+    //   });
+    // productWithStocks['stocks'] = stocks;
+    return product;
   }
 
   async create(product): Promise<ProductsInterface> {

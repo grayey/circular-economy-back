@@ -3,7 +3,7 @@ import { Entities } from 'src/utils/enums';
 
 export const CategoriesSchema = new Schema(
   {
-    aggregator: {
+    [Entities.Aggregator]: {
       type: Schema.Types.ObjectId,
       ref: Entities.Aggregator,
     },
@@ -11,9 +11,10 @@ export const CategoriesSchema = new Schema(
       type: String,
       max: 50,
     },
-    parentId: {
-      type: String,
-      max: 255,
+    [Entities.Category]: {
+      type: Schema.Types.ObjectId,
+      ref: Entities.Category,
+      default: new Schema.Types.ObjectId(''), // because it is nullable for a no-parent category
     },
     description: {
       type: String,

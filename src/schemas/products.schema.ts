@@ -3,7 +3,7 @@ import { Entities } from 'src/utils/enums';
 
 export const ProductsSchema = new Schema(
   {
-    aggregator: {
+    [Entities.Aggregator]: {
       type: Schema.Types.ObjectId,
       ref: Entities.Aggregator,
     },
@@ -15,21 +15,22 @@ export const ProductsSchema = new Schema(
       type: String,
       max: 100,
     },
-    category: {
-      type: Schema.Types.Mixed,
+    [Entities.Category]: {
+      type: Schema.Types.ObjectId,
+      ref: Entities.Category,
     },
     featuredStock: {
       type: Schema.Types.ObjectId,
-      ref: 'Stocks',
+      ref: Entities.Stock,
     },
-    owner: {
+    [Entities.User]: {
       type: Schema.Types.ObjectId,
-      ref: 'Users',
+      ref: Entities.User,
     },
-    stocks: [
+    [Entities.Stock]: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Stocks',
+        ref: [Entities.Stock],
       },
     ],
     keywords: {
