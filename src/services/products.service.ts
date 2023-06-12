@@ -3,7 +3,6 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { ProductsInterface } from '../interfaces/products.interface';
 import { StocksInterface } from '../interfaces/stocks.interface';
-import { Schemata } from 'src/schemas';
 import { Entities } from 'src/utils/enums';
 import { Pagination } from 'src/interfaces/pagination.interface';
 import { SearchService } from './search.service';
@@ -65,37 +64,29 @@ export class ProductsService extends SearchService {
     const whereKey = idOrSlug.includes('.html') ? 'slug' : '_id';
     const product = await this.productModel
       .findOne({ [whereKey]: idOrSlug })
-      .populate(Entities.Category)
-      .populate({
-        path: 'featuredStock',
-        populate: {
-          path: 'bids',
+      .populate([
+        Entities.Category,
+        Entities.User,
+        {
+          path: 'featuredStock',
           populate: {
-            path: 'buyer review',
+            path: 'bids',
+            populate: {
+              path: 'buyer review',
+            },
           },
         },
-      })
-      .populate({
-        path: Entities.Stock,
-        populate: {
-          path: 'bids',
+        {
+          path: Entities.Stock,
           populate: {
-            path: 'buyer review',
+            path: 'bids',
+            populate: {
+              path: 'buyer review',
+            },
           },
         },
-      })
-      .populate(Entities.User);
+      ]);
 
-    // const productWithStocks = { ...product }['_doc'];
-    // const stocks = await this.stockModel
-    //   .find({ productId: product._id })
-    //   .populate({
-    //     path: 'bids',
-    //     populate: {
-    //       path: 'buyer review',
-    //     },
-    //   });
-    // productWithStocks['stocks'] = stocks;
     return product;
   }
 
@@ -125,34 +116,38 @@ export class ProductsService extends SearchService {
    *
    *
    * [createProductStocks description]
-   * @param  id    [description]
+   * @param  id    product id
    * @param  stock [description]
    * @return       [description]
    */
   async createProductStocks(
-    id: string,
+    productId: string,
     stock: StocksInterface,
   ): Promise<StocksInterface> {
-    const productUpdateObject = { $inc: { no_of_stocks: 1 } }; // increment no of stocks for the product
-    const productStock = { ...stock, productId: id };
-    const newStock = new this.stockModel(productStock);
+    console.log({ stock });
+    const newStock = new this.stockModel({ ...stock, [Entities.Product]: productId,  });
     const createdStock = await newStock.save();
+    const product: ProductsInterface = await this.productModel.findOne({
+      _id: productId,
+    });
+    product[Entities.Stock].push(createdStock._id);
+    await product.save();
     if (createdStock.isFeatured) {
-      productUpdateObject['featuredStock'] = createdStock._id; // so that a first created stock also updates the product's featuredStock
+      // so that a first created stock also updates the product's featuredStock
+      await this.featureProductStock(createdStock._id, createdStock);
     }
-    const product = await this.productModel.updateOne(
-      { _id: id },
-      productUpdateObject,
-    );
     return createdStock;
   }
 
-  async findOneStock(id: string): Promise<StocksInterface> {
-    return await this.stockModel.findOne({ _id: id });
+  async getStockById(id: string): Promise<StocksInterface> {
+    return await this.stockModel.findOne({ _id: id }).populate({
+      path: Entities.Product,
+      populate: Entities.Category,
+    });
   }
 
   async featureProductStock(
-    id: string,
+    stockId: string,
     stock: StocksInterface,
   ): Promise<StocksInterface> {
     const { productId } = stock;
@@ -170,7 +165,7 @@ export class ProductsService extends SearchService {
     ); //unfeature the old featuredStock
 
     // update the new featured stock
-    return await this.stockModel.findByIdAndUpdate(id, featuredStock, {
+    return await this.stockModel.findByIdAndUpdate(stockId, featuredStock, {
       new: true, // Passing new:true returns the currently updated entity
     });
   }

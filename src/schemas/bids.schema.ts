@@ -3,32 +3,33 @@ import { BidStages, Entities, RejectionTypes } from 'src/utils/enums';
 
 export const BidsSchema = new Schema(
   {
-    aggregator: {
+    [Entities.Aggregator]: {
       type: Schema.Types.ObjectId,
       ref: Entities.Aggregator,
     },
-    buyer: {
+    [Entities.User]: {
+      //buyer
       type: Schema.Types.ObjectId,
-      ref: 'Users',
+      ref: Entities.User,
     },
-    review: {
+    [Entities.Review]: {
       type: Schema.Types.ObjectId,
-      ref: 'Reviews',
+      ref: Entities.Review,
+    },
+    [Entities.Stock]: {
+      type: Schema.Types.ObjectId,
+      ref: Entities.Stock,
     },
     pricePerKg: {
       type: String,
       max: 100,
     },
+    quantity: {
+      type: String,
+    },
     holdingTrx: {
       type: String,
       max: 100,
-    },
-    stock: {
-      type: Schema.Types.ObjectId,
-      ref: 'Stocks',
-    },
-    quantity: {
-      type: Number,
     },
     stage: {
       type: String,

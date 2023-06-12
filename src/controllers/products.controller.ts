@@ -86,4 +86,9 @@ export class ProductsController {
   ): Promise<StocksInterface> {
     return await this.productService.featureProductStock(id, createStockDto);
   }
+
+  @Get('stocks/:id')
+  async getStockById(@Param('id') id): Promise<StocksInterface> {
+    return await this.productService.getStockById(id);
+  }
 }

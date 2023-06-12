@@ -1,6 +1,8 @@
+import { Entities } from 'src/utils/enums';
+
 export class BidDto {
-  readonly pricePerKg: string;
-  readonly quantity: string;
-  readonly stock: string;
-  readonly userId: string;
+  pricePerKg: string;
+  quantity: string;
+  [Entities.Stock]: string;
+  [Entities.User]: string;
 }

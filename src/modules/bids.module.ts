@@ -8,5 +8,6 @@ import { Schemata } from 'src/schemas';
   imports: [MongooseModule.forFeature([Schemata.Bid, Schemata.Stock])],
   controllers: [BidsController],
   providers: [BidsService],
+  exports: [BidsService],
 })
 export class BidsModule {}

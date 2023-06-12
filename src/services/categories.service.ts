@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Model, Schema } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CategoriesInterface } from 'src/interfaces/categories.interface';
 import { Entities } from 'src/utils/enums';
 import { SearchService } from './search.service';
 import { Pagination } from 'src/interfaces/pagination.interface';
+import { CategoryDto } from 'src/dtos/categories.dto';
 
 @Injectable()
 export class CategoriesService extends SearchService {
@@ -46,12 +47,23 @@ export class CategoriesService extends SearchService {
   }
 
   async findOne(id: string): Promise<CategoriesInterface> {
-    return await this.categoryModel.findOne({ _id: id });
+    return await this.categoryModel
+      .findOne({ _id: id })
+      .populate([Entities.Aggregator, Entities.Category]);
   }
 
-  async create(category): Promise<CategoriesInterface> {
-    const newCategoriesInterface = new this.categoryModel(category);
-    return await newCategoriesInterface.save();
+  async create(category: CategoryDto): Promise<CategoriesInterface> {
+    const previousCategories = category.Category
+      ? await this.categoryModel.find()
+      : [];
+
+    category.ancestors = await this.getAncestry(
+      category.Category,
+      previousCategories,
+    );
+
+    const newCategory = new this.categoryModel(category);
+    return await newCategory.save();
   }
   async delete(id: string): Promise<CategoriesInterface> {
     return await this.categoryModel.findByIdAndRemove(id);
@@ -65,4 +77,20 @@ export class CategoriesService extends SearchService {
       new: true,
     });
   }
+
+  private getAncestry = async (parentId, allCategories = [], ancestry = []) => {
+    const parentIndex = allCategories.findIndex(
+      (cat) => parentId == cat._id?.toString(),
+    );
+    const immediateParent = parentIndex > -1 ? allCategories[parentIndex] : {};
+    const { _id, name, Category: parentCategoryId } = immediateParent;
+    if (_id) {
+      ancestry.unshift({ _id, name });
+      if (parentCategoryId) {
+        allCategories.splice(parentIndex, 1); // reduce the list
+        return this.getAncestry(parentCategoryId, allCategories, ancestry);
+      }
+    }
+    return ancestry;
+  };
 }

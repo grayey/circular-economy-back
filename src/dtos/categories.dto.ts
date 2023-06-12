@@ -1,8 +1,10 @@
+import { Entities } from 'src/utils/enums';
+
 export class CategoryDto {
   readonly name: string;
-  readonly parentCategory: string;
+  readonly [Entities.Category]: string;
   readonly description: string;
   readonly commission: number;
   readonly status: boolean;
-  readonly ancestors: any;
+  ancestors: any[];
 }

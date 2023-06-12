@@ -80,11 +80,16 @@ export enum Entities {
   Category = 'Category',
   Chat = 'Chat',
   Notification = 'Notification',
-  Task = 'Task'
+  Task = 'Task',
 }
 
 export enum ApiErrors {
   NOT_FOUND = 'NOT_FOUND',
   TOKEN_EXPIRED = 'TOKEN_EXPIRED',
   UNAUTHORIZED = 'UNAUTHORIZED',
+}
+
+export enum SocketEvents {
+  BID_CREATED_INPUT = 'BID_CREATED_INPUT',
+  BID_CREATED_OUTPUT = 'BID_CREATED_OUTPUT',
 }

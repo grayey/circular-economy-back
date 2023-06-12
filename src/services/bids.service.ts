@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { BidsInterface } from '../interfaces/bids.interface';
 import { StocksInterface } from '../interfaces/stocks.interface';
 import { Entities } from 'src/utils/enums';
+import { BidDto } from 'src/dtos/bids.dto';
 
 @Injectable()
 export class BidsService {
@@ -52,56 +53,44 @@ export class BidsService {
       .populate('review');
   }
 
-  async create(bid): Promise<BidsInterface> {
+  async create(bid: BidDto): Promise<BidsInterface> {
     const newBid = new this.bidModel(bid);
     const parentStock: StocksInterface = await this.stockModel.findById(
-      bid.stock,
+      bid[Entities.Stock],
     );
     const savedBid = await newBid.save();
-    parentStock.bids.push(newBid);
+    parentStock[Entities.Bid].push(savedBid._id);
     await parentStock.save();
     return savedBid;
   }
 
-  async delete(id: string): Promise<BidsInterface> {
-    return await this.bidModel.findByIdAndRemove(id);
-  }
-
-  async update(id: string, bid: BidsInterface): Promise<BidsInterface> {
-    return await this.bidModel.findByIdAndUpdate(id, bid, {
-      new: true,
-    });
-  }
-
-  async patch(id: string, fields: any): Promise<BidsInterface | any> {
-    return await this.bidModel.updateOne({ _id: id }, { $set: fields });
+  async getBidById(bidId: string): Promise<BidsInterface> {
+    return this.bidModel.findById(bidId).populate([
+      Entities.Aggregator,
+      Entities.User,
+      Entities.Review,
+      {
+        path: Entities.Stock,
+        populate: [Entities.Product],
+      },
+    ]);
   }
 
   /**
-   * PRODUCT STOCKS SECTION
-   *
-   *
-   * [createBidStocks description]
-   * @param  id    [description]
-   * @param  stock [description]
-   * @return       [description]
+   * This method retrieves the bids for a stock
+   * @param stockId
    */
-  async createBidStocks(
-    id: string,
-    stock: StocksInterface,
-  ): Promise<StocksInterface> {
-    const bid_update_object = { $inc: { no_of_stocks: 1 } }; // increment no of stocks for the bid
-    const bidStock = { ...stock, bid_id: id };
-    const newStock = new this.stockModel(bidStock);
-    const createdStock = await newStock.save();
-    if (createdStock.isFeatured) {
-      bid_update_object['featuredStock'] = createdStock; // so that a first created stock also updates the bid's featuredStock
-    }
-    const bid = await this.bidModel.updateOne({ _id: id }, bid_update_object);
-    return createdStock;
-  }
-
-  async findOneStock(id: string): Promise<StocksInterface> {
-    return await this.stockModel.findOne({ _id: id });
-  }
+  public getBidsByStockId = async (
+    stockId: string,
+  ): Promise<BidsInterface | any> => {
+    return this.bidModel.find({ [Entities.Stock]: stockId }).populate([
+      Entities.Aggregator,
+      Entities.User,
+      Entities.Review,
+      {
+        path: Entities.Stock,
+        populate: [Entities.Product],
+      },
+    ]);
+  };
 }

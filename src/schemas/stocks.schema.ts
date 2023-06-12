@@ -3,17 +3,19 @@ import { Entities } from 'src/utils/enums';
 
 export const StocksSchema = new Schema(
   {
-    aggregator: {
+    [Entities.Aggregator]: {
       type: Schema.Types.ObjectId,
       ref: Entities.Aggregator,
     },
-    product: { type: Schema.Types.ObjectId, ref: Entities.Product },
+    [Entities.Product]: { type: Schema.Types.ObjectId, ref: Entities.Product },
 
     price: {
       type: Number,
     },
 
-    bids: [{ type: Schema.Types.ObjectId, ref: Entities.Bid }],
+    [Entities.Bid]: [
+      { type: Schema.Types.ObjectId, ref: Entities.Bid, default: [] },
+    ],
 
     quantity: {
       type: Number,

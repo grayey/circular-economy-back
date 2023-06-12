@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { WsAdapter } from '@nestjs/platform-ws';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ErrorsInterceptor } from 'src/interceptors/errors.interceptor';
 import { AppModule } from 'src/modules/app.module';
@@ -12,13 +13,14 @@ const bootstrap = async () => {
     new ErrorsInterceptor(),
     new TransformInterceptor(),
   );
+
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Circular Economy')
     .setDescription('The Circular Economy API Description by Dotisense')
     .setVersion('1.0')
     .build();
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('api', app, swaggerDocument);
+  SwaggerModule.setup('api-document', app, swaggerDocument);
 
   await app.listen(8000);
 
@@ -27,5 +29,3 @@ const bootstrap = async () => {
 const application = bootstrap();
 
 export default application;
-
-
