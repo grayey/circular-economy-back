@@ -11,6 +11,10 @@ export const ProductsSchema = new Schema(
       type: String,
       max: 50,
     },
+    location: {
+      type: String,
+      max: 50,
+    },
     slug: {
       type: String,
       max: 100,
@@ -19,11 +23,8 @@ export const ProductsSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: Entities.Category,
     },
-    featuredStock: {
-      type: Schema.Types.ObjectId,
-      ref: Entities.Stock,
-    },
     [Entities.User]: {
+      // seller
       type: Schema.Types.ObjectId,
       ref: Entities.User,
     },

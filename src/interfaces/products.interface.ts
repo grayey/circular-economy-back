@@ -5,10 +5,10 @@ export interface ProductsInterface extends Document {
   id?: string;
   name: string;
   slug: string;
+  location: string;
   [Entities.User]: string;
   [Entities.Category]: string;
-  featuredStock: any;
-  keywords?: any;
+  tags?: any;
   [Entities.Stock]: string[];
   packaging: string;
   deliveryOption: string;

@@ -12,7 +12,7 @@ export const CategoriesSchema = new Schema(
       max: 50,
     },
     [Entities.Category]: {
-      type: Schema.Types.ObjectId,
+      type: Schema.Types.Mixed,
       ref: Entities.Category,
       default: new Schema.Types.ObjectId(''), // because it is nullable for a no-parent category
     },

@@ -37,20 +37,29 @@ export class BidsService {
     return bidWithStocks;
   }
 
-  async findOneByUser(id: string): Promise<BidsInterface | any> {
+  async findOneByUser(userId: string): Promise<BidsInterface | any> {
+    // find bid where user is the buyer or the seller
+    const buyerQuery = {
+      [Entities.User]: userId,
+    };
+    const sellerNestedProperty = `${Entities.Stock}.${Entities.Product}.${Entities.User}`;
+    const sellerQuery = {
+      [sellerNestedProperty]: userId,
+    };
+    const query = { $or: [buyerQuery, sellerQuery] };
+
     return this.bidModel
-      .find({ buyer: id })
-      .populate('buyer')
+      .find(query)
+      .populate(Entities.User)
       .populate({
-        path: 'stock',
+        path: Entities.Stock,
         populate: {
-          path: 'productId',
+          path: Entities.Product,
           populate: {
-            path: 'owner',
+            path: Entities.User,
           },
         },
-      })
-      .populate('review');
+      });
   }
 
   async create(bid: BidDto): Promise<BidsInterface> {

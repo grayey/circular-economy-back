@@ -22,7 +22,7 @@ import { PermissionsGuard } from 'src/guards/permissions.guard';
 import { UserAuthGuard } from 'src/guards/userAuth.guard';
 
 @ApiTags('Users')
-@UseGuards(UserAuthGuard)
+// @UseGuards(UserAuthGuard)
 @Controller('user')
 export class UserController {
   constructor(
@@ -34,7 +34,7 @@ export class UserController {
    * This method lists users
    */
   @Get()
-  @Permissions('/api/user')
+  // @Permissions('/api/user')
   @UseGuards(PermissionsGuard)
   async getAllUsers(
     @Query() { q, skip, limit, paginate = true, include },
@@ -69,12 +69,8 @@ export class UserController {
   @Post()
   async createUser(@Body() user: UserCreateDto): Promise<UserInterface> {
     const passwordStringParams: TokenParams = {}; // use defaults
-    // user.password = generateRandomToken(user, passwordStringParams);
-    user.password = 'password';
-    user.status = true;
-    const newUser = await this.userService.create(user);
-    this.notifyUserOnCreation(user, `${environment.clientUrl}/login`);
-    return newUser;
+    user.password = generateRandomToken(user, passwordStringParams);
+    return await this.userService.create(user);
   }
 
   /**
@@ -101,19 +97,4 @@ export class UserController {
     return await this.userService.delete(id);
   }
 
-  /**
-   * Notifies an admin-created user
-   * @param user
-   * @param clientUrl
-   * @returns
-   */
-  private notifyUserOnCreation = (user: UserCreateDto, clientUrl: string) => {
-    if (isValidEmail(user.loginId)) {
-      return this.globalNotificationService.sendNewUserCreationEmail(
-        user,
-        clientUrl,
-      );
-    }
-    this.globalNotificationService.sendNewUserCreationSms(user, clientUrl);
-  };
 }

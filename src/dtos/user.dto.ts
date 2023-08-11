@@ -34,9 +34,15 @@ export class UserDto {
 
   @ApiProperty({
     type: String,
-    description: 'Required',
+    description: 'Optional',
   })
-  aggregatorId: string;
+  aggregatorId?: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'Optional',
+  })
+  aggregatorCode?: string;
 
   @ApiProperty({
     type: String,

@@ -39,6 +39,7 @@ export enum BidStages {
   PRODUCT_DELIVERED = 'PRODUCT_DELIVERED',
   RECEPTION_CONFIRMED = 'RECEPTION_CONFIRMED',
   SELLER_IS_PAID = 'SELLER_IS_PAID',
+  REJECTED = 'REJECTED',
 }
 
 export enum RejectionTypes {
@@ -92,4 +93,9 @@ export enum ApiErrors {
 export enum SocketEvents {
   BID_CREATED_INPUT = 'BID_CREATED_INPUT',
   BID_CREATED_OUTPUT = 'BID_CREATED_OUTPUT',
+}
+
+export enum SignUpType {
+  CREATION = 'CREATION',
+  REGISTRATION = 'REGISTRATION',
 }

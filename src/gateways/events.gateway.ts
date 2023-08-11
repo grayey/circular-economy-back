@@ -40,10 +40,8 @@ export class EventsGateway implements OnModuleInit {
   }
 
   @SubscribeMessage(SocketEvents.BID_CREATED_INPUT)
-  async emitBidCreated(@MessageBody() bidId: string): Promise<BidDto> {
+  async emitBidCreated(@MessageBody() bidId: string): Promise<void> {
     const bid: BidDto = await this.bidService.getBidById(bidId);
     this.server.emit(SocketEvents.BID_CREATED_OUTPUT, bid);
-    console.log('Sent message increated here');
-    return bid;
   }
 }

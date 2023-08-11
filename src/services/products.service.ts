@@ -66,22 +66,13 @@ export class ProductsService extends SearchService {
       .findOne({ [whereKey]: idOrSlug })
       .populate([
         Entities.Category,
-        Entities.User,
-        {
-          path: 'featuredStock',
-          populate: {
-            path: 'bids',
-            populate: {
-              path: 'buyer review',
-            },
-          },
-        },
+        Entities.User, // seller. The user on the product is the seller
         {
           path: Entities.Stock,
           populate: {
-            path: 'bids',
+            path: Entities.Bid,
             populate: {
-              path: 'buyer review',
+              path: `${Entities.User} ${Entities.Review}`, // buyer. The user on the bid is the buyer.
             },
           },
         },
@@ -124,8 +115,10 @@ export class ProductsService extends SearchService {
     productId: string,
     stock: StocksInterface,
   ): Promise<StocksInterface> {
-    console.log({ stock });
-    const newStock = new this.stockModel({ ...stock, [Entities.Product]: productId,  });
+    const newStock = new this.stockModel({
+      ...stock,
+      [Entities.Product]: productId,
+    });
     const createdStock = await newStock.save();
     const product: ProductsInterface = await this.productModel.findOne({
       _id: productId,
@@ -142,7 +135,7 @@ export class ProductsService extends SearchService {
   async getStockById(id: string): Promise<StocksInterface> {
     return await this.stockModel.findOne({ _id: id }).populate({
       path: Entities.Product,
-      populate: Entities.Category,
+      populate: [Entities.Category, Entities.Stock],
     });
   }
 

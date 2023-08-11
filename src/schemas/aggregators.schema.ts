@@ -19,6 +19,10 @@ export const AggregatorsSchema = new Schema(
       type: String,
       max: 255,
     },
+    aggregatorCode: {
+      type: String,
+      max: 255,
+    },
     status: {
       type: Boolean,
       default: true,

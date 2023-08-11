@@ -7,7 +7,7 @@ import { compareSync } from 'bcrypt';
 import { UserInterface } from 'src/interfaces/user.interface';
 import { UserCreateDto, UserSignUpDto } from 'src/dtos/user.dto';
 import { formatErrors } from 'src/utils/helpers';
-import { ApiErrors } from 'src/utils/enums';
+import { ApiErrors, SignUpType } from 'src/utils/enums';
 import { copyToJson } from 'src/utils/formatters';
 import { jwtConstants } from 'src/utils/constants';
 import environment from 'src/environments';
@@ -82,5 +82,5 @@ export class AuthService {
    * @returns
    */
   public signUp = async (user: UserSignUpDto): Promise<UserInterface> =>
-    await this.usersService.create(user);
+    await this.usersService.create(user, SignUpType.REGISTRATION);
 }

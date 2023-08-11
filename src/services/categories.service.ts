@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Model, Schema } from 'mongoose';
+import { Model, Schema, SchemaTypes } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CategoriesInterface } from 'src/interfaces/categories.interface';
 import { Entities } from 'src/utils/enums';
@@ -63,6 +63,8 @@ export class CategoriesService extends SearchService {
     );
 
     const newCategory = new this.categoryModel(category);
+    console.log('Reached here');
+
     return await newCategory.save();
   }
   async delete(id: string): Promise<CategoriesInterface> {
