@@ -49,12 +49,12 @@ export class AuthService {
     if (!user) {
       throw formatErrors(ApiErrors.NOT_FOUND, 'User not found.');
     }
-    if (new Date(user.tokenExpires) < new Date()) {
-      throw formatErrors(
-        ApiErrors.TOKEN_EXPIRED,
-        'Verification token expired.',
-      );
-    }
+    // if (new Date(user.tokenExpires) < new Date()) {
+    //   throw formatErrors(
+    //     ApiErrors.TOKEN_EXPIRED,
+    //     'Verification token expired.',
+    //   );
+    // }
     user.status = true;
     user.save();
     return this.login(user);

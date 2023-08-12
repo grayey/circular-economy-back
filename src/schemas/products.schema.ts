@@ -24,7 +24,7 @@ export const ProductsSchema = new Schema(
       ref: Entities.Category,
     },
     [Entities.User]: {
-      // seller
+      // seller/owner
       type: Schema.Types.ObjectId,
       ref: Entities.User,
     },

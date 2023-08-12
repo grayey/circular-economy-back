@@ -196,7 +196,7 @@ export class UserService extends SearchService {
     try {
       await this.globalNotficationService.sendSignUpEmail(
         user,
-        `${environment.clientUrl}/verify-email?activate=${token}`,
+        `${environment.clientUrl}/email-verification?activate=${token}`,
       );
     } catch (e) {
       //logger

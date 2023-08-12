@@ -46,18 +46,23 @@ export class ProductsService extends SearchService {
     return await this.paginate(searchTerm, pagination);
   }
 
-  // async findAll(): Promise<ProductsInterface[]> {
-  //   return await this.productModel
-  //     .find()
-  //     .populate('featuredStock')
-  //     .populate('owner');
-  // }
-
-  async findProductsByOwnerId(owner): Promise<ProductsInterface[] | any> {
-    return await this.productModel
-      .find({ owner })
-      .populate('featuredStock')
-      .populate('owner');
+  async findProductsByOwnerId(
+    ownerId,
+    { q, skip, limit, paginate = true },
+  ): Promise<ProductsInterface[] | any> {
+    const query = this.productModel
+      .find({ [Entities.User]: ownerId })
+      .populate([Entities.User, Entities.Category, Entities.Stock])
+      .sort({
+        _id: 1,
+      })
+      .skip(skip);
+    if (limit) {
+      query.limit(limit);
+    }
+    const results = await query;
+    const count = results.length; // TODO: change this to the count of all
+    return { results, count };
   }
 
   async findOne(idOrSlug: string): Promise<ProductsInterface | any> {

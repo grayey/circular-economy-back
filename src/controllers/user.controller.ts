@@ -67,6 +67,7 @@ export class UserController {
    * Admin uses this method to create a new user
    */
   @Post()
+  @UseGuards(PermissionsGuard)
   async createUser(@Body() user: UserCreateDto): Promise<UserInterface> {
     const passwordStringParams: TokenParams = {}; // use defaults
     user.password = generateRandomToken(user, passwordStringParams);
@@ -80,6 +81,7 @@ export class UserController {
    * @returns
    */
   @Put(':id')
+  @UseGuards(PermissionsGuard)
   async update(
     @Body() updateUserDto: UserUpdateDto,
     @Param('id') id: string,
@@ -93,6 +95,7 @@ export class UserController {
    * @returns
    */
   @Delete(':id')
+  @UseGuards(PermissionsGuard)
   async delete(@Param('id') id: string): Promise<UserInterface> {
     return await this.userService.delete(id);
   }

@@ -20,6 +20,7 @@ export class AuthController {
 
   @Post('verify-user')
   async verifyUser(@Body() { signUpToken }: UserVerfiyDto) {
+    console.log({ signUpToken });
     return await this.authService.verifyUser(signUpToken);
   }
 

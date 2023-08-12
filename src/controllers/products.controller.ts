@@ -17,6 +17,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { ProductsService } from 'src/services/products.service';
 import { ProductsInterface } from 'src/interfaces/products.interface';
 import { StocksInterface } from 'src/interfaces/stocks.interface';
+import { UserAuthGuard } from 'src/guards/userAuth.guard';
 
 @ApiTags('Products')
 @Controller('product')
@@ -35,14 +36,19 @@ export class ProductsController {
     });
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id): Promise<ProductsInterface> {
-    return await this.productService.findOne(id);
-  }
-
-  @Get('owner/:id')
-  async findProductsByOwnerId(@Param('id') id): Promise<ProductsInterface> {
-    return await this.productService.findProductsByOwnerId(id);
+  @Get('my-products')
+  @UseGuards(UserAuthGuard)
+  async findProductsByOwnerId(
+    @Query() { q, skip, limit, paginate = true },
+    @Req() req,
+  ): Promise<any> {
+    console.log({ user: req.user?._id });
+    return await this.productService.findProductsByOwnerId(req.user?._id, {
+      q,
+      skip,
+      limit,
+      paginate,
+    });
   }
 
   @Post()
@@ -53,13 +59,18 @@ export class ProductsController {
     return this.productService.create({ ...ProductDto, slug });
   }
 
+  @Get(':id')
+  async findOne(@Param('id') id): Promise<ProductsInterface> {
+    return await this.productService.findOne(id);
+  }
+
   @Delete(':id')
   delete(@Param('id') id): Promise<ProductsInterface> {
     return this.productService.delete(id);
   }
 
   @Put(':id')
-  update(
+  async update(
     @Body() updateProductDto,
     @Param('id') id,
   ): Promise<ProductsInterface> {
